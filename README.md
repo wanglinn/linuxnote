@@ -1,0 +1,2 @@
+# linuxnote
+note
