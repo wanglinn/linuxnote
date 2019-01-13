@@ -371,7 +371,7 @@ https://www.cnblogs.com/senior-engineer/p/6163677.html
 https://www.cnblogs.com/msb-/articles/6042413.html
 上面5的问题应该是：单次发送过大，对端每次读只读取一部分数据就返回，这样内核缓冲区有可能被占满，由于读取一次就返回当再次执行write函数则无法写入，
 从而发生hang 问题，所以read write 需要循环直到read返回0或者write返回0表示读结束或者写结束。
-
+:: 将read, write 改为不断循环直至返回为0， 发现发送基本上都可以一次发送完毕，但是接收需要不断循环每次只能接收xxkb 是个动态调整的过程。
 
 
 
