@@ -1,0 +1,44 @@
+函数指针  vs 指针函数
+需要理解清楚这两个本质区别。
+指针函数：是个简称，实际指返回值是指针的函数，本质上是一个函数。比如 int *func1(int a, int b) 类似这样。
+函数指针：本质上是一个指针，该指针指向了一个函数，所以称之为函数指针。
+
+#include <stdio.h>
+
+int (*func1)(int ,int );
+
+int f1(int a, int b)
+{
+  int c = a + b;
+  //fprintf(stdout, "%d\n",c);
+}
+
+
+int f2(int a, int b)
+{
+  int c = a*b;
+ // fprintf(stdout, "%d\n",c);
+}
+
+int f3(int a, int b, int (*func1)(int ,int ))
+{
+        //func1 = f2;
+        int c = a + b + func1(a, b);
+        fprintf(stdout, "%d\n",c);
+}
+
+int main()
+{
+   f1(2, 5);
+   f2(2, 5);
+   
+   func1 = f1;
+   f3(2, 5, func1);
+   func1 = &f2;  //等价于 func1 = f2; 因为f2 本质上就是指针，其值就是地址
+   f3(2, 5, func1);
+}
+
+
+参考：
+https://baike.baidu.com/item/%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88/2674905?fr=aladdin
+
