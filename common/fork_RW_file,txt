@@ -1,0 +1,62 @@
+和同事一起面试要招聘的同学，提到了一个问题：
+在fork前打开了文件，在父子进程中分别对文件写入数据，两者互相互覆盖吗？
+
+涉及的内容包括：父子进程之间关系及影响，文件描述符在内核涉及的数据结构
+
+写了一个程序简单验证下自己的想法。
+
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <errno.h>
+
+int main()
+{
+   char *str1 = "aaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbc1\n";
+   char *str2 = "eeeeeeeeeeeeeefffffffffffffffffffffffffffffffc2\n";
+   char *filename = "f1.txt";
+   int fd;
+   int status;
+   int i=0;
+   int j = 0;
+   int N=1000;
+   pid_t pid;
+   
+   fd = open(filename, O_RDWR | O_CREAT);
+   if (fd < 0)
+   {
+       fprintf(stderr, "open file %s fail: %s", filename, strerror(errno));
+           return EXIT_FAILURE;
+   }
+    
+   pid = fork();
+   if (pid > 0)
+   {
+      while (i++ < N)
+        write(fd, str1, strlen(str1));
+          
+   }
+   else if (pid == 0)
+   {
+      while(j++ < N)
+        write(fd, str2, strlen(str1));
+   }
+   else
+   {
+      fprintf(stderr, "fork fail: %s", strerror(errno));
+          return EXIT_FAILURE;
+   }
+   
+   close(fd);
+   
+   wait(&status);
+ }
+ 
+ ：： 结论是父子进程对文件的写不会互影响，文件内部指针位置是一个递增移动的过程，因为使用的本来就是同一个文件描述符。
+ 
+ 
+ 
+ 
+   
