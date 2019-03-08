@@ -1,3 +1,44 @@
 《c++ primer plush 》
 
+字符串中含有'\0' 影响查看字符串长度及遍历字符
+
+[wln@localhost1 cplusplus]$ cat s1.c
+#include <stdio.h>
+#include <string.h>
+
+int mgr_find_char_num(char *str, char checkValue)
+{
+        int num = 0;
+        char *pstr;
+
+        if (!str)
+                return 0;
+        pstr = str;
+        while(*pstr)
+        {
+                if (*pstr == checkValue)
+                        num++;
+                pstr++;
+        }
+
+        return num;
+}
+
+
+int main ()
+{
+
+  char *s1 = "aavvssd \0 233233";
+  int n;
+  printf("length = %d\n", strlen(s1));  -- 这个长度不对
+  n = mgr_find_char_num(s1, '2');  -- 这个结果不对
+  printf("%d\n", n);
+  n = mgr_find_char_num(s1, 's');
+  printf("%d\n", n);
+}
+
+[wln@localhost1 cplusplus]$ ./s1
+length = 8
+0
+2
 
