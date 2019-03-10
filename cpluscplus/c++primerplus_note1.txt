@@ -177,3 +177,23 @@ void print(anyType a, anyType b)
 {
   cout<<a<<"\t\t"<<b<<endl;
 }
+
+
+-----
+如果 有多 个 原型， 则 编译器 在 选择 原型 时， 非 模板 版本 优先于 显 式 具体化 和 模板 版本， 而 显 式 具体化 优先于 使用 模板 生成 的 版本。
+
+Stephen Prata. C++ Primer Plus（第6版）中文版（异步图书） (C和C++实务精选) (Kindle 位置 6572-6573). 人民邮电出版社. Kindle 版本. 
+下面两个函数 没看出差别， 显示模板 用 template <> void Swap...表示。
+
+void Swap(int &a, int &b )
+{
+  a = 10;
+  b = 20;
+}
+
+template <> void Swap(int &a, int &b )
+{
+  a = 10;
+  b = 20;
+}
+
