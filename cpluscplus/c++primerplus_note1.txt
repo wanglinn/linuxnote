@@ -42,3 +42,138 @@ length = 8
 0
 2
 
+《8.5 函数模板》
+
+在 标准 C++ 98 添加 关键字 typename 之前， C++ 使用 关键字 class 来 创建 模板。
+变量名anyType 一般用T表示。
+需要注意的是：将函数名字Swap改为swap 报如下错误：
+[wln@localhost1 cplusplus]$ g++ -g -o template3 template3.cpp
+template3.cpp: In function ‘int main(int, char**)’:
+template3.cpp:19: error: call of overloaded ‘swap(int&, int&)’ is ambiguous
+template3.cpp:7: note: candidates are: void swap(anyType&, anyType&) [with anyType = int]
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../include/c++/4.4.7/bits/move.h:76: note:                 void std::swap(_Tp&, _Tp&) [with _Tp = int]
+template3.cpp:25: error: call of overloaded ‘swap(float&, float&)’ is ambiguous
+template3.cpp:7: note: candidates are: void swap(anyType&, anyType&) [with anyType = float]
+/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../include/c++/4.4.7/bits/move.h:76: note:                 void std::swap(_Tp&, _Tp&) [with _Tp = float]
+
+打开文件/usr/lib/gcc/x86_64-redhat-linux/4.4.7/../../../../include/c++/4.4.7/bits/move.h 会发现：
+/** @file move.h
+ *  This is an internal header file, included by other library headers.
+ *  You should not attempt to use it directly.
+ */
+
+#ifndef _MOVE_H
+#define _MOVE_H 1
+
+#include <bits/c++config.h>
+#include <cstddef>
+#include <bits/concept_check.h>
+
+#ifdef __GXX_EXPERIMENTAL_CXX0X__
+#include <type_traits>
+
+_GLIBCXX_BEGIN_NAMESPACE(std)
+
+  // 20.2.2, forward/move
+  template<typename _Tp>
+    struct identity
+    {
+      typedef _Tp type;
+    };
+
+  template<typename _Tp>
+    inline _Tp&&
+    forward(typename std::identity<_Tp>::type&& __t)
+    { return __t; }
+
+  template<typename _Tp>
+    inline typename std::remove_reference<_Tp>::type&&
+    move(_Tp&& __t)
+    { return __t; }
+
+_GLIBCXX_END_NAMESPACE
+
+#define _GLIBCXX_MOVE(_Tp) std::move(_Tp)
+#else
+#define _GLIBCXX_MOVE(_Tp) (_Tp)
+#endif
+
+_GLIBCXX_BEGIN_NAMESPACE(std)
+
+  /**
+   *  @brief Swaps two values.
+   *  @param  a  A thing of arbitrary type.
+   *  @param  b  Another thing of arbitrary type.
+   *  @return   Nothing.
+  */
+  template<typename _Tp>
+    inline void
+    swap(_Tp& __a, _Tp& __b)
+    {
+      // concept requirements
+      __glibcxx_function_requires(_SGIAssignableConcept<_Tp>)
+
+      _Tp __tmp = _GLIBCXX_MOVE(__a);
+      __a = _GLIBCXX_MOVE(__b);
+      __b = _GLIBCXX_MOVE(__tmp);
+    }
+
+  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+  // DR 809. std::swap should be overloaded for array types.
+  template<typename _Tp, size_t _Nm>
+    inline void
+    swap(_Tp (&__a)[_Nm], _Tp (&__b)[_Nm])
+    {
+      for (size_t __n = 0; __n < _Nm; ++__n)
+        swap(__a[__n], __b[__n]);
+    }
+
+_GLIBCXX_END_NAMESPACE
+
+#endif /* _MOVE_H */
+
+所以需要将swap 改为Swap 避免与系统定义重名。
+
+
+#include <iostream>
+
+using namespace std;
+
+
+template <class anyType>
+void Swap(anyType &a, anyType &b);
+
+template <class anyType>
+void print(anyType a, anyType b);
+
+
+int main(int argc, char **argv)
+{
+   int a1 = 2;
+   int b1 = 3;
+
+   print(a1, b1);
+   Swap(a1, b1);
+   print(a1, b1);
+
+   float a2 = 3.1;
+   float b2 = 2.1;
+   print(a2, b2);
+   Swap(a2, b2);
+   print(a2, b2);
+}
+
+template <class anyType>
+void Swap(anyType &a, anyType &b)
+{
+    anyType temp;
+    temp = a;
+    a = b;
+    b = temp;
+}
+
+template <class anyType>
+void print(anyType a, anyType b)
+{
+  cout<<a<<"\t\t"<<b<<endl;
+}
