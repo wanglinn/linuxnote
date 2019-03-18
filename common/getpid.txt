@@ -1,0 +1,71 @@
+//对一个程序执行，该程序是bash的子进程
+[wln@localhost1 getpid]$ ps xuf
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+wln       5393  0.0  0.0 108488  1988 pts/2    Ss   09:36   0:00 -bash
+
+pid=fork()， pid > 0 对应父进程返回值是子进程的进程号，pid=0是子进程
+若不加wait函数，父进程可能先于子进程结束，则此时子进程的父进程号就是1 也就是init进程号。
+[wln@localhost1 getpid]$ ./getpid1
+self pid = 28288
+parent pid = 5393
+in parent process, pid=28289:
+self pid = 28288
+parent pid = 5393
+in child process:
+self pid = 28289
+parent pid = 28288
+wait status = 0
+wait status = 4096
+
+
+
+/* getpid1.c */
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+//pid_t getpid(void);
+//pid_t getppid(void);
+
+void printSelfPid()
+{
+	pid_t selfPid = getpid();
+	fprintf(stdout, "self pid = %d\n", selfPid);
+	fflush(stdout);
+}
+
+void printParentPid()
+{
+	pid_t parentPid = getppid();
+	fprintf(stdout, "parent pid = %d\n", parentPid);
+	fflush(stdout);
+}
+
+int main()
+{
+	int status;
+
+	printSelfPid();
+	printParentPid();
+
+	pid_t pid = fork();
+	if (pid < 0)
+	{
+		perror("fork error");
+	}
+	else if (pid > 0)
+	{
+		fprintf(stdout, "in parent process, pid=%d:\n", pid);
+		printSelfPid();
+		printParentPid();
+	}
+	else
+	{
+		fprintf(stdout, "in child process:\n");
+		printSelfPid();
+		printParentPid();
+	}
+
+	wait(&status);
+	fprintf(stdout, "wait status = %d\n", status);
+}
+
