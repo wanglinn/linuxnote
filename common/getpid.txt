@@ -5,6 +5,13 @@ wln       5393  0.0  0.0 108488  1988 pts/2    Ss   09:36   0:00 -bash
 
 pid=fork()， pid > 0 对应父进程返回值是子进程的进程号，pid=0是子进程
 若不加wait函数，父进程可能先于子进程结束，则此时子进程的父进程号就是1 也就是init进程号。
+
+参考：
+http://www.man7.org/linux/man-pages/man2/getpid.2.html
+
+linux进程fork复制了父进程的哪些资源（写时复制）
+https://blog.csdn.net/weixin_42250655/article/details/81605369
+
 [wln@localhost1 getpid]$ ./getpid1
 self pid = 28288
 parent pid = 5393
