@@ -32,8 +32,9 @@ defs.o : defs.c
         cc -c defs.c
 
 main.o : main.c
-        cc -c main.c
-
+        cc -c main.c
+clean :
+        rm main main.o defs.o
 
 
 参考：
