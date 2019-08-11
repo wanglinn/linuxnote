@@ -1,0 +1,39 @@
+25家免费下载文献网站：
+
+1.香港科技大学图书馆 Dspace：http://repository.ust.hk/dspace
+2.加利福尼亚大学国际和区域数字馆藏：https://escholarship.org/
+3.剑桥大学机构知识库：http://www.dspace.cam.ac.uk/ 
+4.发展中国家联合期刊库：http://www.bioline.org.br/
+5.美国密西根大学论文库：http://deepblue.lib.umich.edu/index.jsp 
+6.jfg CERN Document Server：http://cdsweb.cern.ch/ 
+7.kl ArXiv：http://arxiv.org/ArXiv/ 
+8.NASA Technical Reports Server ：http://ntrs.nasa.gov/
+9.NSC for Environmental Publications ：http://www.epa.gov/ncepihom/
+10.Energy Citations Database ：http://www.osti.gov/energycitations/
+11.网上免费全文期刊：FullText
+http://www.freefulltext.com/  
+12.Open J-Gate 开放获取期刊门户：
+http://www.openj-gate.com/ 
+13.PMC(PubMed Centeral)：
+http://www.pubmedcentral.org/ 
+14.专门OA期刊文献检索系统:
+http://www.doaj.org/ 
+15.HighWire Press：
+http://intl.highwire.org
+16.University of Tennessee, Knoxville：
+http://diglib.lib.utk.edu/utj/jei-home.php
+17.The Electronic Library of Mathematics ：http://emis.math.ecnu.edu.cn/journals/  
+18.Science.gov ：http://www.science.gov/ 
+19.ERIC教育资源信息中心：
+http://www.eric.ed.gov/  
+20.PLoS公共科学图书馆：
+http://www.plos.org/ 
+21.Journal of Statistical Software：
+http://www.jstatsoft.org/  
+22.Social Science Research Network ：http://www.ssrn.com/ 
+23.Max Planck Society：
+http://www.livingreviews.org
+24.NCSTRL：
+http://europeangovernance.livingreviews.org/
+25.世界银行报告：
+http://www-wds.worldbank.org
