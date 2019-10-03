@@ -261,7 +261,7 @@ int enlargeStringInfo(StringInfo str, int needed)
     needed += str->len + 1;        /* total space required now */
 
     if (needed <= str->maxlen)
-        return;                    /* got enough space already */
+        return EXEC_SUCCESS;                    /* got enough space already */
 
     newlen = 2 * str->maxlen;
     while (needed > newlen)
