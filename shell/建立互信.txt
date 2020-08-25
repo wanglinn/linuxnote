@@ -1,0 +1,13 @@
+1.rm -rf ~/.ssh
+2.ssh-keygen -t dsa -f ~/.ssh/id_dsa -N ""
+3.cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+4.chmod 640 ~/.ssh/authorized_keys
+5.add config in .ssh
+Host
+   StrictHostKeyChecking=no
+
+then,
+chmod 0600 ~/.ssh/config
+6.if the content shows like this:
+reverse mapping checking getaddrinfo for bogon [192.168.17.130] failed - POSSIBLE BREAK-IN ATTEMPT!
+it needs to modify the file /etc/ssh/ssh_config , changes "GSSAPIAuthentication yes" to "GSSAPIAuthentication no"
