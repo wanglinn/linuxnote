@@ -1,0 +1,33 @@
+#test1 
+
+#include <stdio.h>   
+#include <execinfo.h>   
+void printCallStack()   
+{ 
+        int size = 16; // 最多打印16层调用栈      
+        void* buffer[size]; // 用于存放调用栈信息    
+        int count = backtrace(buffer, size); // 获取调用栈  
+        char** ptr = backtrace_symbols(buffer, count); // 将调用栈信息转成字符串    
+        for (int i = 0; i< count; i++) { // 打印字符串      
+                printf("count = %d, name = %s\n", count, ptr[i]);   
+        }     
+        free(ptr); // 释放分配的内存 
+}  
+void test3(int n) { int a = 1;printCallStack(); }   
+void test2(int n) { test3(3); } 
+void test1(int n) { test3(2); }  
+int main() { test1(1); }     
+
+-- 执行结果
+gcc -g -rdynamic -o x1 x1.c
+输出
+count = 6, name = ./x1(printCallStack+0x89) [0x4011ef]
+count = 6, name = ./x1(test3+0x1c) [0x401279]
+count = 6, name = ./x1(test1+0x15) [0x4012a9]
+count = 6, name = ./x1(main+0xe) [0x4012ba]
+count = 6, name = /lib64/libc.so.6(__libc_start_main+0xf5) [0x7fa486f68555]
+count = 6, name = ./x1() [0x4010b9]
+
+
+
+  
